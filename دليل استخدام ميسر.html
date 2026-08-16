@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>دليل استخدام بوابة ميسر للدفع الإلكتروني</title>
+<style>
+:root {
+  --navy:#183B56; --green:#14A38B; --ink:#17212b; --muted:#5d6873;
+  --bg:#f4f7f9; --card:#ffffff; --line:#d9e2e8; --warn:#fff8e6;
+  --danger:#fff0f0; --info:#eef8ff;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:"Segoe UI", Tahoma, Arial, sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.9;
+}
+.container { max-width:1100px; margin:0 auto; padding:28px 18px 70px; }
+.hero {
+  background:linear-gradient(135deg,var(--navy),#235879);
+  color:#fff; border-radius:22px; padding:36px; box-shadow:0 14px 35px rgba(24,59,86,.16);
+}
+.hero h1 { margin:0 0 8px; font-size:34px; line-height:1.35; }
+.hero p { margin:7px 0; color:#e8f2f7; }
+.badges { margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
+.badge { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
+  border-radius:999px; padding:5px 12px; font-size:13px; }
+.toolbar { display:flex; gap:10px; margin:18px 0; flex-wrap:wrap; }
+button,.btn {
+  border:0; border-radius:10px; padding:11px 17px; font-weight:700; cursor:pointer;
+  text-decoration:none; display:inline-block;
+}
+button { background:var(--green); color:white; }
+.btn.secondary { background:#fff; color:var(--navy); border:1px solid var(--line); }
+.card {
+  background:var(--card); border:1px solid var(--line); border-radius:18px;
+  padding:25px; margin-top:18px; box-shadow:0 5px 18px rgba(23,33,43,.045);
+}
+h2 { color:var(--navy); margin:0 0 14px; font-size:25px; }
+h3 { color:#1d506c; margin-top:25px; margin-bottom:8px; }
+h4 { color:var(--navy); margin-bottom:6px; }
+p { margin:8px 0 13px; }
+ul,ol { padding-right:24px; }
+li { margin:5px 0; }
+table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+th,td { border:1px solid var(--line); padding:11px; vertical-align:top; text-align:right; }
+th { background:#edf3f6; color:var(--navy); }
+.note,.warning,.danger {
+  border-radius:13px; padding:14px 16px; margin:14px 0;
+}
+.note { background:var(--info); border-right:5px solid #3993c6; }
+.warning { background:var(--warn); border-right:5px solid #d89b13; }
+.danger { background:var(--danger); border-right:5px solid #c94d4d; }
+.checklist { list-style:none; padding:0; }
+.checklist li { padding:8px 0; border-bottom:1px dashed var(--line); }
+.checklist li::before { content:"☐"; color:var(--green); font-weight:bold; margin-left:9px; }
+.timeline { counter-reset:stage; }
+.stage {
+  position:relative; padding:0 46px 22px 0; border-right:3px solid #dce8ed;
+}
+.stage::before {
+  counter-increment:stage; content:counter(stage);
+  position:absolute; right:-17px; top:0; width:31px; height:31px; border-radius:50%;
+  background:var(--green); color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;
+}
+.stage:last-child { border-right-color:transparent; }
+.code {
+  direction:ltr; text-align:left; background:#111827; color:#e5edf5; border-radius:12px;
+  padding:14px; overflow:auto; font-family:Consolas, monospace; font-size:13px; line-height:1.55;
+}
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px; }
+.kpi { background:#f8fbfc; border:1px solid var(--line); border-radius:14px; padding:15px; }
+.kpi strong { display:block; color:var(--navy); font-size:18px; }
+.small { font-size:13px; color:var(--muted); }
+.toc a { color:var(--navy); text-decoration:none; }
+.toc li { margin:4px 0; }
+.source-list a { color:#165b82; word-break:break-all; }
+footer { text-align:center; color:var(--muted); margin-top:28px; font-size:13px; }
+@media(max-width:800px) {
+  .hero h1 { font-size:26px; }
+  .kpi-grid { grid-template-columns:1fr 1fr; }
+  table { font-size:12px; }
+}
+@media print {
+  body { background:#fff; font-size:11pt; }
+  .container { max-width:none; padding:0; }
+  .hero { box-shadow:none; border-radius:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .toolbar { display:none; }
+  .card { box-shadow:none; break-inside:avoid; }
+  h2,h3 { break-after:avoid; }
+  table { break-inside:auto; }
+  tr { break-inside:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="hero">
+    <h1>دليل استخدام بوابة ميسر للدفع الإلكتروني</h1>
+    <p>بحث موسع في الشروط والمتطلبات والرسوم والعمليات والتكامل التقني، مع خطة تنفيذية حتى أول عملية دفع حقيقية.</p>
+    <p><strong>تاريخ إعداد التقرير:</strong> 5 أغسطس 2026</p>
+    <div class="badges">
+      <span class="badge">السوق السعودي</span>
+      <span class="badge">وثيقة العمل الحر أو السجل التجاري</span>
+      <span class="badge">موقع إلكتروني / تطبيق / روابط دفع</span>
+      <span class="badge">من الاختبار إلى الإنتاج</span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <button onclick="window.print()">طباعة / حفظ PDF</button>
+    <a class="btn secondary" href="#plan">الانتقال إلى الدليل التنفيذي</a>
+  </div>
+
+  <section class="card">
+    <h2>الملخص التنفيذي</h2>
+    <p>
+      ميسر شركة مالية سعودية مرخصة من البنك المركزي السعودي لتقديم خدمات مدفوعات التجارة الإلكترونية.
+      تتيح قبول المدفوعات عبر مدى والبطاقات الائتمانية والمحافظ الرقمية ووسائل أخرى بحسب ما يتم تفعيله للحساب.
+      ويمكن البدء ببيئة اختبار قبل اكتمال التفعيل التجاري.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi"><strong>الترخيص</strong><span>مقدم خدمات مدفوعات مرخص من البنك المركزي السعودي</span></div>
+      <div class="kpi"><strong>أهلية التسجيل</strong><span>سجل تجاري سعودي أو وثيقة عمل حر</span></div>
+      <div class="kpi"><strong>الحساب البنكي</strong><span>حساب تجاري سعودي مرتبط بالكيان</span></div>
+      <div class="kpi"><strong>التسعير</strong><span>عرض مخصص من فريق المبيعات، وليس جدولًا عامًا ثابتًا</span></div>
+    </div>
+    <div class="warning">
+      <strong>النتيجة الأهم بخصوص الرسوم:</strong>
+      لا تنشر ميسر حاليًا أسعارًا موحدة ثابتة على موقعها. يجب طلب عرض سعر مكتوب يوضح رسوم التأسيس أو الاشتراك
+      ورسوم كل وسيلة دفع والضريبة ورسوم الاسترداد والاعتراض والتسوية وأي حد أدنى شهري.
+    </div>
+    <p>
+      بالنسبة لمشروع رقمي ناشئ يستخدم وثيقة عمل حر: المسار ممكن مبدئيًا وفق الأسئلة الشائعة الرسمية، بشرط أن تكون
+      الوثيقة سارية وأن يتوفر حساب بنكي تجاري سعودي مرتبط بها، وأن يكون المنتج أو الموقع واضحًا ويحتوي على الأسعار
+      والسياسات وقنوات التواصل وآلية الاسترجاع.
+    </p>
+  </section>
+
+  <section class="card toc">
+    <h2>فهرس التقرير</h2>
+    <ol>
+      <li><a href="#about">ما هي ميسر وما الذي تقدمه؟</a></li>
+      <li><a href="#requirements">الشروط والمتطلبات</a></li>
+      <li><a href="#fees">الرسوم والتكاليف</a></li>
+      <li><a href="#operations">دورة العملية المالية</a></li>
+      <li><a href="#integration">خيارات الربط التقني</a></li>
+      <li><a href="#security">الأمن والامتثال</a></li>
+      <li><a href="#refunds">الاسترداد والنزاعات</a></li>
+      <li><a href="#plan">الدليل التنفيذي حتى أول دفعة حقيقية</a></li>
+      <li><a href="#acceptance">اختبارات القبول قبل الإطلاق</a></li>
+      <li><a href="#recommendation">التوصية العملية للمشروع</a></li>
+    </ol>
+  </section>
+
+  <section class="card" id="about">
+    <h2>1. ما هي ميسر وما الذي تقدمه؟</h2>
+    <p>
+      ميسر منصة سعودية لمعالجة المدفوعات الإلكترونية، وتظهر في قائمة مقدمي خدمات المدفوعات المرخصين لدى البنك
+      المركزي السعودي. تشمل خدماتها بوابة دفع، واجهات API، نموذج دفع JavaScript، روابط وفواتير دفع، أدوات استرداد،
+      Webhooks، تقارير عمليات وتسويات، وتكاملات مع منصات تجارة إلكترونية.
+    </p>
+    <table>
+      <thead><tr><th>الخدمة</th><th>الاستخدام</th><th>الأنسب لها</th></tr></thead>
+      <tbody>
+        <tr><td>نموذج الدفع داخل الموقع</td><td>إظهار خيارات الدفع في صفحة السداد وربط النتيجة بالطلب</td><td>المنتجات الرقمية والمتاجر والمنصات</td></tr>
+        <tr><td>واجهة API</td><td>إنشاء وإدارة المدفوعات والاستردادات والتقارير برمجيًا</td><td>الأنظمة المخصصة</td></tr>
+        <tr><td>الفواتير وروابط الدفع</td><td>إنشاء رابط مستضاف وإرساله للعميل</td><td>البداية السريعة أو البيع المباشر</td></tr>
+        <tr><td>Webhooks</td><td>إشعار الخادم آليًا بتغير حالة الدفع أو الاسترداد</td><td>تفعيل الاشتراكات أو الطلبات بشكل موثوق</td></tr>
+        <tr><td>التسويات والتقارير</td><td>مطابقة المدفوعات والرسوم والمبالغ المحولة للبنك</td><td>المحاسبة والمراجعة المالية</td></tr>
+      </tbody>
+    </table>
+    <p>تذكر الوثائق الرسمية وسائل مثل مدى، Visa، Mastercard، American Express، UnionPay، Apple Pay، Samsung Pay وSTC Pay، لكن التوفر الفعلي لكل وسيلة يخضع للتفعيل والعقد ونوع نشاط التاجر.</p>
+  </section>
+
+  <section class="card" id="requirements">
+    <h2>2. الشروط والمتطلبات</h2>
+
+    <h3>2.1 المتطلبات القانونية والتجارية الأساسية</h3>
+    <ul>
+      <li>سجل تجاري سعودي ساري، أو وثيقة عمل حر سارية بحسب ما تقبله ميسر رسميًا.</li>
+      <li>حساب بنكي تجاري سعودي مرتبط بالكيان أو الوثيقة، وليس حسابًا شخصيًا عاديًا.</li>
+      <li>أن يكون النشاط والمنتج أو الخدمة مسموحًا بهما نظامًا وغير مدرجين ضمن الأنشطة المحظورة أو عالية المخاطر.</li>
+      <li>بيانات هوية المالك أو المفوض، وبيانات المنشأة والمستفيد الحقيقي عند الطلب.</li>
+      <li>قد تطلب ميسر مستندات إضافية لأغراض التحقق والامتثال ومكافحة غسل الأموال.</li>
+    </ul>
+
+    <h3>2.2 متطلبات الموقع أو المنتج قبل التفعيل</h3>
+    <ul>
+      <li>وصف واضح للمنتجات أو الخدمات.</li>
+      <li>صور أو عرض مناسب للمنتج عند الحاجة.</li>
+      <li>أسعار ظاهرة بوضوح، مع توضيح ما إذا كانت شاملة ضريبة القيمة المضافة.</li>
+      <li>سياسة استرجاع واسترداد وإلغاء واضحة.</li>
+      <li>شروط وأحكام الاستخدام أو البيع.</li>
+      <li>سياسة خصوصية.</li>
+      <li>قنوات تواصل ظاهرة: بريد إلكتروني ورقم هاتف أو وسيلة دعم.</li>
+      <li>بيانات الكيان التجاري أو مقدم الخدمة في الموقع.</li>
+      <li>صفحة إتمام شراء أو مسار مفهوم يبين ما الذي سيحصل عليه العميل بعد الدفع.</li>
+    </ul>
+
+    <div class="note">
+      لا يشترط أن يكون التصميم النهائي للموقع مكتملًا، لكن يجب أن تكون أساسيات النشاط والمنتجات والأسعار والسياسات
+      وآلية الاسترجاع وقنوات التواصل موجودة وقابلة للمراجعة.
+    </div>
+
+    <h3>2.3 قائمة مستندات يُنصح بتجهيزها مسبقًا</h3>
+    <ul class="checklist">
+      <li>نسخة السجل التجاري أو وثيقة العمل الحر.</li>
+      <li>شهادة أو خطاب الآيبان للحساب البنكي التجاري باسم الكيان.</li>
+      <li>الهوية الوطنية للمالك أو المفوض.</li>
+      <li>العنوان الوطني وبيانات التواصل.</li>
+      <li>رابط الموقع أو نسخة قابلة للعرض من المنتج.</li>
+      <li>وصف النشاط ونموذج الإيرادات ومتوسط قيمة العملية المتوقع.</li>
+      <li>حجم المبيعات الشهري المتوقع وعدد العمليات المتوقع.</li>
+      <li>الدول التي سيأتي منها العملاء، خصوصًا عند طلب قبول مدفوعات دولية.</li>
+      <li>سياسات الخصوصية والاسترجاع والشروط.</li>
+      <li>تفويض رسمي إن كان مقدم الطلب ليس المالك.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="fees">
+    <h2>3. الرسوم والتكاليف</h2>
+    <p>
+      التسعير الرسمي الحالي لا يظهر كجدول منشور؛ ميسر تحيل التاجر إلى فريق المبيعات للحصول على عرض يناسب النشاط
+      وحجم العمليات. لذلك لا ينبغي بناء الخطة المالية على نسبة متداولة في مواقع غير رسمية أو عروض قديمة.
+    </p>
+    <h3>3.1 البنود التي يجب طلبها كتابيًا</h3>
+    <table>
+      <thead><tr><th>البند</th><th>السؤال المطلوب</th><th>لماذا مهم؟</th></tr></thead>
+      <tbody>
+        <tr><td>رسوم التأسيس</td><td>هل توجد رسوم تفعيل أو إعداد لمرة واحدة؟</td><td>تؤثر في تكلفة البداية</td></tr>
+        <tr><td>الاشتراك الشهري</td><td>هل توجد باقة شهرية أو حد أدنى للفوترة؟</td><td>مهم عند انخفاض المبيعات</td></tr>
+        <tr><td>رسوم مدى</td><td>النسبة والمبلغ الثابت والضريبة لكل عملية</td><td>غالبًا وسيلة رئيسية محليًا</td></tr>
+        <tr><td>Visa/Mastercard وغيرها</td><td>رسوم كل شبكة محلية ودولية</td><td>تختلف باختلاف البطاقة والمنشأ</td></tr>
+        <tr><td>Apple Pay والمحافظ</td><td>هل لها رسوم إضافية أم تتبع رسوم البطاقة الأساسية؟</td><td>لتوقع التكلفة الفعلية</td></tr>
+        <tr><td>الاسترداد</td><td>هل تُرد رسوم العملية الأصلية؟ وهل توجد رسوم للاسترداد؟</td><td>يؤثر في سياسة الإلغاء</td></tr>
+        <tr><td>Chargeback</td><td>رسوم الاعتراض الخاسر والإجراءات والمدة</td><td>مخاطر مالية مباشرة</td></tr>
+        <tr><td>التسوية</td><td>دورية التحويل، الرسوم البنكية، الحد الأدنى، أيام العمل</td><td>يؤثر في التدفق النقدي</td></tr>
+        <tr><td>المدفوعات الدولية</td><td>رسوم العملة والبطاقات الأجنبية والدول المسموحة</td><td>قد تكون لها موافقة ورسوم إضافية</td></tr>
+        <tr><td>الضريبة</td><td>هل الأسعار المعروضة شاملة ضريبة القيمة المضافة؟</td><td>للمحاسبة الدقيقة</td></tr>
+      </tbody>
+    </table>
+    <div class="danger">
+      تنص شروط الدفع عبر المنصات المنشورة لدى ميسر على رسم قدره 200 ريال عند خسارة مطالبة استرداد
+      (Chargeback) في الحالات المحددة بتلك الشروط. يجب التحقق من انطباق هذا الرقم على عقدك المباشر ونوع حسابك،
+      لأن عقد التاجر النهائي هو المرجع الحاسم.
+    </div>
+    <h3>3.2 طريقة حساب صافي العملية</h3>
+    <p><strong>صافي المبلغ المتوقع = قيمة العملية − رسوم المعالجة − ضريبة الرسوم − أي خصومات أو استردادات أو اعتراضات.</strong></p>
+    <p>مثال توضيحي فقط: لا تستخدم أي نسبة افتراضية في الميزانية النهائية قبل استلام عرض ميسر المكتوب.</p>
+  </section>
+
+  <section class="card" id="operations">
+    <h2>4. دورة العملية المالية</h2>
+    <ol>
+      <li>ينشئ نظامك طلبًا داخليًا بحالة <strong>بانتظار الدفع</strong> ورقمًا مرجعيًا فريدًا.</li>
+      <li>تُنشأ عملية الدفع لدى ميسر بالمبلغ بالهللات، والعملة، والوصف، ورابط العودة والبيانات الوصفية.</li>
+      <li>يدخل العميل وسيلة الدفع، وقد ينتقل إلى صفحة تحقق مثل 3‑D Secure.</li>
+      <li>تعود واجهة العميل إلى موقعك، لكن لا تعتمد على صفحة العودة وحدها لإثبات السداد.</li>
+      <li>يتحقق الخادم من العملية باستخدام API أو يستقبل Webhook موثوقًا.</li>
+      <li>إذا كانت الحالة <strong>paid</strong> وبالمبلغ والعملة والمرجع الصحيح، يُفعّل الطلب أو الاشتراك مرة واحدة فقط.</li>
+      <li>تظهر العملية لاحقًا ضمن التسوية، بعد خصم الرسوم والضريبة والبنود الأخرى.</li>
+      <li>تُطابق التسوية مع سجلات النظام والحساب البنكي.</li>
+    </ol>
+    <div class="warning">
+      صفحة النجاح في المتصفح ليست إثباتًا كافيًا للدفع؛ يمكن تزوير رابطها أو إعادة فتحها. الإثبات يجب أن يأتي من
+      تحقق خادمي باستخدام المفتاح السري أو من Webhook تم التحقق من سلامته.
+    </div>
+
+    <h3>حالات الدفع الأساسية</h3>
+    <table>
+      <thead><tr><th>الحالة</th><th>المعنى</th><th>تصرف نظامك</th></tr></thead>
+      <tbody>
+        <tr><td>initiated</td><td>بدأت العملية ولم تُحسم بعد أو تحتاج تحديًا إضافيًا</td><td>أبقِ الطلب معلقًا ولا تمنح الخدمة</td></tr>
+        <tr><td>paid</td><td>تم الدفع بنجاح</td><td>تحقق من البيانات ثم فعّل الطلب مرة واحدة</td></tr>
+        <tr><td>failed</td><td>فشلت العملية</td><td>اعرض سببًا عامًا وآمنًا واسمح بالمحاولة مجددًا</td></tr>
+        <tr><td>refunded / partially refunded</td><td>أعيد المبلغ كليًا أو جزئيًا</td><td>حدّث الحالة والسجلات والحقوق المرتبطة بالخدمة</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card" id="integration">
+    <h2>5. خيارات الربط التقني</h2>
+    <h3>الخيار الأول: روابط الدفع أو الفواتير</h3>
+    <p>الأسرع لإجراء أول دفعة فعلية أو البيع اليدوي. تُنشأ فاتورة من لوحة التحكم أو API ويُرسل الرابط للعميل. ميزته قلة التطوير، لكن التحكم في تجربة الطلب والتفعيل الآلي يكون أقل من التكامل الكامل.</p>
+
+    <h3>الخيار الثاني: نموذج الدفع JavaScript</h3>
+    <p>مناسب لموقع مخصص. تستخدم المفتاح القابل للنشر في الواجهة، بينما يبقى المفتاح السري في الخادم فقط. يدعم النموذج وسائل متعددة بحسب التفعيل.</p>
+
+    <h3>الخيار الثالث: API كامل</h3>
+    <p>أفضل للمنصات والاشتراكات والمنتجات الرقمية، ويتيح إدارة المدفوعات والاستردادات والتقارير وربط كل عملية بطلب داخلي.</p>
+
+    <h3>مفاتيح API</h3>
+    <ul>
+      <li><strong>Publishable Key:</strong> يُسمح باستخدامه في الواجهة ضمن الاستخدام المخصص له.</li>
+      <li><strong>Secret Key:</strong> لا يُوضع في JavaScript أو تطبيق العميل أو مستودع Git، ويُحفظ في متغيرات بيئة الخادم.</li>
+      <li>افصل مفاتيح الاختبار عن مفاتيح الإنتاج.</li>
+      <li>دوّر المفتاح فور الاشتباه بتسربه.</li>
+    </ul>
+
+    <h3>الـ Webhooks</h3>
+    <p>
+      تُستخدم لتلقي أحداث الدفع والاسترداد والتسوية بشكل غير متزامن. يجب أن تكون نقطة الاستقبال عبر HTTPS، وأن تتحقق
+      من السر أو التوقيع بحسب آلية ميسر، وأن تكون المعالجة قابلة للتكرار دون تنفيذ الطلب مرتين.
+    </p>
+    <div class="code">POST /api/payments/moyasar/webhook
+1) Verify webhook authenticity
+2) Store event ID and raw payload
+3) Ignore duplicate event
+4) Match payment to internal order
+5) Verify amount, currency, status and reference
+6) Apply state transition atomically
+7) Return HTTP 2xx quickly</div>
+
+    <h3>حقول داخلية يُنصح بحفظها</h3>
+    <table>
+      <thead><tr><th>الحقل</th><th>الغرض</th></tr></thead>
+      <tbody>
+        <tr><td>internal_order_id</td><td>مرجع الطلب داخل نظامك</td></tr>
+        <tr><td>moyasar_payment_id</td><td>معرف العملية لدى ميسر</td></tr>
+        <tr><td>amount_minor</td><td>المبلغ بالهللات لتجنب أخطاء الكسور</td></tr>
+        <tr><td>currency</td><td>العملة، مثل SAR</td></tr>
+        <tr><td>status</td><td>حالة الدفع الحالية</td></tr>
+        <tr><td>paid_at / refunded_at</td><td>وقت الدفع أو الاسترداد</td></tr>
+        <tr><td>provider_fee / tax / net</td><td>للمطابقة المالية عند توفرها</td></tr>
+        <tr><td>idempotency / processed_event_ids</td><td>منع تكرار التفعيل</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card" id="security">
+    <h2>6. الأمن والامتثال</h2>
+    <ul>
+      <li>استخدم مكونات ميسر أو صفحة دفع مستضافة حتى لا تمر بيانات البطاقة الحساسة عبر خادمك.</li>
+      <li>لا تخزن رقم البطاقة الكامل أو CVV تحت أي ظرف.</li>
+      <li>استخدم HTTPS في كل صفحات الدفع ونقاط Webhook.</li>
+      <li>طبّق صلاحيات محدودة على لوحة ميسر، ومصادقة متعددة العوامل إن كانت متاحة.</li>
+      <li>احفظ سجلات تدقيق لكل تغيير مالي واسترداد وتفعيل خدمة.</li>
+      <li>تحقق خادميًا من المبلغ والعملة والطلب، ولا تثق في القيم القادمة من المتصفح.</li>
+      <li>طبّق حدودًا للمحاولات ومراقبة للأنماط غير الطبيعية.</li>
+      <li>التزم بنظام حماية البيانات الشخصية السعودي عند معالجة بيانات العملاء.</li>
+    </ul>
+    <p>تذكر ميسر رسميًا التوافق مع PCI‑DSS والالتزام بأنظمة البنك المركزي السعودي، كما تنص شروط المنصات على ألا تمر بيانات البطاقة السرية على خادم التاجر.</p>
+  </section>
+
+  <section class="card" id="refunds">
+    <h2>7. الاسترداد والنزاعات والتسويات</h2>
+    <h3>الاسترداد</h3>
+    <p>
+      تدعم الواجهة استردادًا كاملًا أو جزئيًا لعملية ناجحة. ووفق الأسئلة الشائعة لدى ميسر، يستغرق رجوع المبلغ عادة:
+      بطاقات مدى من 24 ساعة إلى 3 أيام عمل، والبطاقات الائتمانية من 7 إلى 14 يوم عمل، دون احتساب عطلات نهاية الأسبوع.
+    </p>
+    <h3>Chargeback أو مطالبة الاسترداد</h3>
+    <p>
+      هي اعتراض يقدمه حامل البطاقة عبر البنك. يجب الاحتفاظ بما يثبت موافقة العميل، ووصف الخدمة، والفاتورة،
+      والتسليم أو التفعيل، وسجلات الدخول والتواصل. وتنص شروط ميسر على ضرورة التعاون السريع وتقديم المستندات ضمن
+      المهلة المطلوبة، وقد يؤدي تكرار الاعتراضات أو الاشتباه بالاحتيال إلى تعليق الخدمة.
+    </p>
+    <h3>التسويات</h3>
+    <p>
+      توضح وثائق ميسر أن التسويات لحسابات التجار التجميعية تتم عادة مرتين أسبوعيًا، مع تقارير عبر البريد وواجهات API،
+      إلا أن الجدول الفعلي لحسابك يجب تثبيته في العرض والعقد. يحتوي كشف التسوية على المدفوعات والاستردادات والرسوم
+      والضريبة والاعتراضات وصافي المبلغ.
+    </p>
+  </section>
+
+  <section class="card" id="plan">
+    <h2>8. الدليل التنفيذي من البداية حتى أول عملية دفع حقيقية</h2>
+    <div class="timeline">
+      <div class="stage">
+        <h3>تحديد نموذج البيع</h3>
+        <p>حدد بدقة: المنتج، السعر، هل هو دفعة واحدة أم اشتراك، وقت تسليم الخدمة، سياسة الإلغاء، ومتوسط عدد العمليات المتوقع.</p>
+        <p><strong>مخرج المرحلة:</strong> ورقة واحدة تصف نموذج الإيرادات والدفع.</p>
+      </div>
+      <div class="stage">
+        <h3>استكمال الأهلية البنكية والتجارية</h3>
+        <p>تأكد من سريان وثيقة العمل الحر أو السجل التجاري، وافتح حسابًا بنكيًا تجاريًا سعوديًا مرتبطًا به، واستخرج خطاب آيبان رسمي.</p>
+        <p><strong>بوابة النجاح:</strong> تطابق اسم المستفيد في الآيبان مع الكيان المقبول لدى ميسر.</p>
+      </div>
+      <div class="stage">
+        <h3>تجهيز الموقع والسياسات</h3>
+        <p>انشر صفحات المنتج والأسعار والخصوصية والشروط والاسترجاع والتواصل، واجعل رحلة الشراء قابلة للمراجعة حتى لو كان التصميم لم يكتمل نهائيًا.</p>
+      </div>
+      <div class="stage">
+        <h3>إنشاء حساب ميسر وبيئة الاختبار</h3>
+        <p>أنشئ الحساب من لوحة ميسر، فعّل البريد والحماية، واحصل على مفاتيح Sandbox. لا تستخدم أي بطاقات حقيقية في الاختبار.</p>
+      </div>
+      <div class="stage">
+        <h3>طلب عرض السعر والتفعيل</h3>
+        <p>أرسل بيانات النشاط وحجم العمليات المتوقع ووسائل الدفع المطلوبة، واطلب عرضًا مكتوبًا يشمل كل الرسوم ودورية التسوية وشروط العقد.</p>
+        <p><strong>لا تعتمد العرض قبل:</strong> مقارنة تكلفة مدى والبطاقات، الاسترداد، Chargeback، الضريبة، والتسوية.</p>
+      </div>
+      <div class="stage">
+        <h3>تنفيذ التكامل التجريبي</h3>
+        <p>أنشئ طلبًا داخليًا، اربطه بعملية ميسر، أضف صفحة نجاح وفشل، ونفذ Webhook وتحققًا خادميًا. استخدم بطاقات الاختبار الرسمية لمحاكاة النجاح والفشل.</p>
+      </div>
+      <div class="stage">
+        <h3>اختبارات شاملة</h3>
+        <p>اختبر الدفع الناجح والفاشل والمعلق، إعادة تحميل الصفحة، تكرار Webhook، اختلاف المبلغ، انقطاع الشبكة، الاسترداد الكامل والجزئي، وعدم منح الخدمة دون تحقق خادمي.</p>
+      </div>
+      <div class="stage">
+        <h3>مراجعة وتفعيل الإنتاج</h3>
+        <p>ارفع المستندات المطلوبة، أكمل KYB/KYC والعقد، عالج أي ملاحظات على الموقع، واحصل على مفاتيح الإنتاج وطرق الدفع المفعلة.</p>
+      </div>
+      <div class="stage">
+        <h3>نشر آمن</h3>
+        <p>ضع مفاتيح الإنتاج في أسرار الخادم، حدّث Webhook الإنتاجي، افصل السجلات والبيانات عن Sandbox، وفعّل التنبيهات والمراقبة.</p>
+      </div>
+      <div class="stage">
+        <h3>تنفيذ أول عملية دفع حقيقية</h3>
+        <p>استخدم منتجًا حقيقيًا منخفض السعر ومسموحًا، وأجرِ العملية ببطاقة حقيقية بعد اعتماد الحساب. تحقق من ظهور paid في لوحة ميسر وفي قاعدة بياناتك، ومن تنفيذ الخدمة مرة واحدة، ثم احتفظ برقم العملية والفاتورة.</p>
+      </div>
+      <div class="stage">
+        <h3>مطابقة أول تسوية</h3>
+        <p>عند صدور التسوية، طابق قيمة العملية والرسوم والضريبة والصافي مع كشف ميسر والحساب البنكي، وسجل القيد المحاسبي.</p>
+        <p><strong>اكتمال الرحلة فعليًا:</strong> ليس عند نجاح الدفع فقط، بل بعد وصول صافي المبلغ ومطابقته.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="acceptance">
+    <h2>9. قائمة اختبارات القبول قبل التشغيل الحقيقي</h2>
+    <ul class="checklist">
+      <li>لا توجد مفاتيح سرية داخل الواجهة أو Git.</li>
+      <li>كل مبلغ يُحسب ويُتحقق منه في الخادم.</li>
+      <li>الدفع لا يمنح الخدمة إلا بعد تحقق خادمي.</li>
+      <li>تكرار Webhook لا يكرر التفعيل أو الفاتورة.</li>
+      <li>العمليات الفاشلة لا تغير حالة الطلب إلى مدفوع.</li>
+      <li>العمليات المعلقة لها آلية إعادة تحقق.</li>
+      <li>الاسترداد الكامل والجزئي يحدثان السجلات بصورة صحيحة.</li>
+      <li>صفحات الخصوصية والشروط والاسترداد والتواصل منشورة.</li>
+      <li>اسم النشاط والأسعار والضريبة واضحة للعميل.</li>
+      <li>يمكن استخراج تقرير يومي يطابق لوحة ميسر.</li>
+      <li>يوجد مسؤول محدد للاستردادات والنزاعات.</li>
+      <li>تم توثيق رقم دعم ميسر وبيانات العقد وعرض السعر.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="recommendation">
+    <h2>10. التوصية العملية للمشروع</h2>
+    <p>
+      لمشروع رقمي ناشئ مثل <strong>Smart Pro Digital / حلول سمارت برو</strong>، أنسب ترتيب هو:
+    </p>
+    <ol>
+      <li>إكمال الحساب البنكي التجاري المرتبط بوثيقة العمل الحر أو الكيان المعتمد.</li>
+      <li>تجهيز صفحات المنتج والسعر والخصوصية والشروط والاسترداد والتواصل قبل طلب التفعيل.</li>
+      <li>بدء التكامل في Sandbox باستخدام API وWebhooks، وعدم ربط التفعيل بصفحة العودة وحدها.</li>
+      <li>طلب عرض سعر مخصص على حجم بداية منخفض مع سؤال صريح عن الحد الأدنى الشهري ودورية التسوية.</li>
+      <li>استخدام روابط الدفع كخطة احتياطية أو بداية تجارية سريعة، مع استمرار بناء التكامل الكامل للمنصة.</li>
+      <li>تنفيذ أول دفعة حقيقية منخفضة القيمة بعد تفعيل الإنتاج، ثم انتظار أول تسوية ومطابقتها قبل اعتبار المسار مكتملًا.</li>
+    </ol>
+    <div class="note">
+      بسبب ارتباط المنتج بتفعيل خدمات رقمية، يجب جعل Webhook والتحقق الخادمي ومنع التكرار جزءًا أساسيًا من التصميم،
+      وليس تحسينًا لاحقًا.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>11. رسالة جاهزة لطلب عرض سعر من ميسر</h2>
+    <p>يمكن إرسال النص التالي بعد استبدال البيانات بين الأقواس:</p>
+    <div style="background:#f8fafb;border:1px solid var(--line);border-radius:12px;padding:18px">
+      السلام عليكم،<br><br>
+      نرغب في تفعيل بوابة ميسر لمشروع رقمي سعودي يقدم [وصف مختصر للخدمة]. الكيان مسجل بواسطة
+      [سجل تجاري/وثيقة عمل حر] ولدينا حساب بنكي تجاري سعودي مرتبط به.<br><br>
+      حجم العمليات المتوقع في البداية: [عدد] عملية شهريًا، ومتوسط العملية [مبلغ] ريال، والعملاء المستهدفون
+      [داخل السعودية/داخل وخارج السعودية]. نرغب في تفعيل [مدى، Visa، Mastercard، Apple Pay، وغيرها].<br><br>
+      نرجو تزويدنا بعرض مكتوب يوضح: رسوم التأسيس، الاشتراك أو الحد الأدنى الشهري، رسوم كل وسيلة دفع،
+      ضريبة الرسوم، رسوم الاسترداد، رسوم الاعتراضات Chargeback، دورية التسوية، مدة التفعيل، وأي متطلبات إضافية.<br><br>
+      كما نرجو توضيح مدى قبول النشاط والمستندات المطلوبة وخطوات الانتقال من Sandbox إلى الإنتاج.<br><br>
+      شكرًا لكم.
+    </div>
+  </section>
+
+  <section class="card source-list">
+    <h2>12. المصادر الرسمية</h2>
+    <ol>
+      <li>موقع ميسر العربي: <a href="https://moyasar.com/ar/">https://moyasar.com/ar/</a></li>
+      <li>الأسئلة الشائعة لميسر: <a href="https://moyasar.com/ar/resources/faqs/">https://moyasar.com/ar/resources/faqs/</a></li>
+      <li>الشروط والأحكام: <a href="https://moyasar.com/ar/resources/terms/">https://moyasar.com/ar/resources/terms/</a></li>
+      <li>شروط الدفع عبر المنصات: <a href="https://moyasar.com/ar/resources/platform-terms-and-conditions/">https://moyasar.com/ar/resources/platform-terms-and-conditions/</a></li>
+      <li>وثائق ميسر — التكامل الأساسي للبطاقات: <a href="https://docs.moyasar.com/guides/card-payments/basic-integration">https://docs.moyasar.com/guides/card-payments/basic-integration</a></li>
+      <li>وثائق ميسر — بطاقات الاختبار: <a href="https://docs.moyasar.com/guides/card-payments/test-cards">https://docs.moyasar.com/guides/card-payments/test-cards</a></li>
+      <li>وثائق ميسر — Webhooks: <a href="https://docs.moyasar.com/api/other/webhooks/webhook-reference">https://docs.moyasar.com/api/other/webhooks/webhook-reference</a></li>
+      <li>وثائق ميسر — الاسترداد: <a href="https://docs.moyasar.com/api/payments/05-refund-payment">https://docs.moyasar.com/api/payments/05-refund-payment</a></li>
+      <li>وثائق ميسر — التسويات: <a href="https://docs.moyasar.com/category/settlements">https://docs.moyasar.com/category/settlements</a></li>
+      <li>البنك المركزي السعودي — ترخيص ميسر: <a href="https://sama.gov.sa/ar-sa/MediaCenter/News/Pages/news-741.aspx">https://sama.gov.sa/ar-sa/MediaCenter/News/Pages/news-741.aspx</a></li>
+      <li>البنك المركزي السعودي — قائمة شركات المدفوعات المرخصة: <a href="https://sama.gov.sa/ar-sa/Supervision/LicenseEntities/pages/licensed_payment_service_providers_companies.aspx">https://sama.gov.sa/ar-sa/Supervision/LicenseEntities/pages/licensed_payment_service_providers_companies.aspx</a></li>
+    </ol>
+    <p class="small">
+      تم الرجوع إلى المصادر الرسمية المتاحة حتى تاريخ إعداد التقرير. العقد وعرض السعر الصادران لحساب التاجر هما
+      المرجع النهائي للرسوم ودورية التسوية ووسائل الدفع المفعلة.
+    </p>
+  </section>
+
+  <footer>
+    تقرير إجرائي مستقل لأغراض التخطيط والتنفيذ، ولا يُعد استشارة قانونية أو محاسبية. راجع عقد ميسر ومستشارك المختص قبل الإطلاق التجاري.
+  </footer>
+</div>
+</body>
+</html>

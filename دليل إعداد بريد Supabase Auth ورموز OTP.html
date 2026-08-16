@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل إعداد بريد Supabase Auth ورموز OTP - حضوري سمارت برو</title>
+    
+    <!-- Bootstrap 5 RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-body-font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+            --hsp-primary: #0284c7;
+            --hsp-primary-dark: #0369a1;
+            --hsp-secondary: #475569;
+            --hsp-bg: #f8fafc;
+            --hsp-card-bg: #ffffff;
+            --hsp-border: #e2e8f0;
+            --hsp-sidebar-width: 280px;
+        }
+
+        body {
+            font-family: var(--bs-body-font-family);
+            background-color: var(--hsp-bg);
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        /* Sticky Navbar */
+        .hsp-navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--hsp-border);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-container {
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+            padding-bottom: 2rem;
+            scrollbar-width: thin;
+        }
+
+        .sidebar-nav .nav-link {
+            color: #64748b;
+            font-size: 0.925rem;
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.25rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-nav .nav-link:hover {
+            color: var(--hsp-primary);
+            background-color: #f0f9ff;
+        }
+
+        .sidebar-nav .nav-link.active {
+            color: var(--hsp-primary-dark);
+            background-color: #e0f2fe;
+            font-weight: 700;
+        }
+
+        .sidebar-nav .nav-link i {
+            width: 22px;
+            font-size: 0.85rem;
+        }
+
+        /* Card Styles */
+        .content-card {
+            background-color: var(--hsp-card-bg);
+            border: 1px solid var(--hsp-border);
+            border-radius: 0.85rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            padding: 1.75rem;
+            margin-bottom: 1.75rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .content-card:hover {
+            border-color: #cbd5e1;
+        }
+
+        .section-title {
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0f2fe;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            color: var(--hsp-primary);
+        }
+
+        /* Code Blocks */
+        .code-block-wrapper {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 1rem 1.25rem;
+            border-radius: 0.6rem;
+            font-family: 'Courier New', Courier, monospace;
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.75rem;
+            border-radius: 0.375rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: none;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        /* Custom Badges & Callouts */
+        .callout-warning {
+            background-color: #fffbeb;
+            border-right: 4px solid #f59e0b;
+            color: #92400e;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .callout-info {
+            background-color: #f0f9ff;
+            border-right: 4px solid #0284c7;
+            color: #0369a1;
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metadata-badge {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 2rem;
+            border: 1px solid #e2e8f0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Custom Table Styling */
+        .table-custom {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--hsp-border);
+        }
+
+        .table-custom th {
+            background-color: #f8fafc;
+            color: #334155;
+            font-weight: 700;
+        }
+
+        /* Checkbox Customization */
+        .checklist-item {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .form-check-input:checked + .form-check-label {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        /* Smooth Scroll Behavior */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar-container {
+                position: static;
+                height: auto;
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#sidebar-menu" data-bs-offset="100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg hsp-navbar py-2">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <i class="fa-solid me-1 fa-shield-halved text-primary fs-4"></i>
+                <span class="fw-bold fs-5 text-dark">حضوري سمارت برو</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill fs-7">دليل بريد Auth & OTP</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                    <li class="nav-item">
+                        <span class="metadata-badge">
+                            <i class="fa-regular fa-calendar"></i> آخر تحديث: 2026-07-29
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="metadata-badge">
+                            <i class="fa-solid fa-code-branch"></i> `hudoori-smart-pro-dev`
+                        </span>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="window.print()">
+                            <i class="fa-solid fa-print me-1"></i> طباعة الوثيقة
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container-fluid px-lg-5 my-4">
+        <div class="row">
+
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3 col-xl-3">
+                <div class="sidebar-container bg-white p-3 rounded-3 border">
+                    <h6 class="fw-bold mb-3 text-uppercase text-muted fs-7 tracking-wider">
+                        <i class="fa-solid fa-list-ol me-2"></i> فهرس المحتويات
+                    </h6>
+                    <nav id="sidebar-menu" class="sidebar-nav">
+                        <a class="nav-link" href="#sec-header"><i class="fa-solid fa-file-contract"></i> نظرة عامة</a>
+                        <a class="nav-link" href="#sec-1"><i class="fa-solid fa-circle-question"></i> 1. لماذا احتجنا إلى Custom SMTP؟</a>
+                        <a class="nav-link" href="#sec-2"><i class="fa-solid fa-diagram-project"></i> 2. القرار الحالي</a>
+                        <a class="nav-link" href="#sec-3"><i class="fa-brands fa-google"></i> 3. إعداد Gmail قبل الربط</a>
+                        <a class="nav-link" href="#sec-4"><i class="fa-solid fa-plug"></i> 4. ربط Gmail SMTP بـ Supabase</a>
+                        <a class="nav-link" href="#sec-5"><i class="fa-solid fa-envelope-open-text"></i> 5. تحويل الرسائل إلى OTP</a>
+                        <a class="nav-link" href="#sec-6"><i class="fa-solid fa-vial-circle-check"></i> 6. طريقة الاختبار الآمن</a>
+                        <a class="nav-link" href="#sec-7"><i class="fa-solid fa-key"></i> 7. مفاتيح Supabase</a>
+                        <a class="nav-link" href="#sec-8"><i class="fa-solid fa-triangle-exclamation"></i> 8. لماذا Gmail حل مؤقت؟</a>
+                        <a class="nav-link" href="#sec-9"><i class="fa-solid fa-server"></i> 9. البدائل المناسبة للإنتاج</a>
+                        <a class="nav-link" href="#sec-10"><i class="fa-solid fa-sliders"></i> 10. معايير اختيار المزود</a>
+                        <a class="nav-link" href="#sec-11"><i class="fa-solid fa-list-check"></i> 11. توصية مرحلية لـ HSP</a>
+                        <a class="nav-link" href="#sec-12"><i class="fa-solid fa-robot"></i> 12. أمر جاهز للذكاء الاصطناعي</a>
+                        <a class="nav-link" href="#sec-13"><i class="fa-solid fa-square-check"></i> 13. قائمة تحقق مختصرة</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-lg-9 col-xl-9">
+
+                <!-- Title & Meta Header Card -->
+                <div class="content-card" id="sec-header">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <h1 class="fw-black text-dark m-0 fs-2">دليل إعداد بريد Supabase Auth ورموز OTP</h1>
+                        <span class="badge bg-dark text-white px-3 py-2 fs-7 rounded-pill">مرجع تشغيلي</span>
+                    </div>
+                    
+                    <div class="row g-3 my-2">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-2 border rounded bg-light">
+                                <small class="text-muted d-block">المشروع</small>
+                                <strong class="text-dark">حضوري سمارت برو (Haduri Smart Pro)</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-2 border rounded bg-light">
+                                <small class="text-muted d-block">الغرض</small>
+                                <strong class="text-dark">مرجع تشغيلي لمالك المنتج</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-2 border rounded bg-light">
+                                <small class="text-muted d-block">النطاق الحالي</small>
+                                <strong class="text-dark">`hudoori-smart-pro-dev` فقط</strong>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="p-2 border rounded bg-light">
+                                <small class="text-muted d-block">Project ref للتجربة</small>
+                                <code class="text-primary fw-bold">rckcezxszymzcsgzgeqw</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout-warning mt-3 mb-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-shield-cat fs-4 text-warning"></i>
+                            <strong>تنبيه أمان غير قابل للتساهل:</strong>
+                        </div>
+                        <p class="mb-0 mt-1">هذه الوثيقة لا تحتوي على كلمات مرور، أو App Password، أو مفاتيح API، أو JWT، أو رموز OTP. لا تضف أي قيمة سرية إليها لاحقًا.</p>
+                    </div>
+                </div>
+
+                <!-- SECTION 1 -->
+                <div class="content-card" id="sec-1">
+                    <h2 class="section-title"><i class="fa-solid fa-circle-question"></i> 1. لماذا احتجنا إلى Custom SMTP؟</h2>
+                    <p>يقدم Supabase خادم بريد افتراضيًا للتجربة الأولية فقط. له قيود تسليم ومعدل إرسال منخفض، وليس مخصصًا للإنتاج.</p>
+                    <p>منذ 3 يونيو 2026 لا تستطيع المشاريع المجانية الجديدة تعديل قوالب رسائل Auth عند استخدام مزود Supabase الافتراضي. يظهر في لوحة التحكم تنبيه يطلب إعداد Custom SMTP قبل تعديل عنوان الرسالة أو محتواها. يعود تعديل القوالب للعمل بعد ربط مزود SMTP خاص.</p>
+                    
+                    <h6 class="fw-bold mt-4 mb-2 text-dark"><i class="fa-solid fa-link text-primary me-1"></i> المراجع الرسمية:</h6>
+                    <ul class="list-group list-group-flush border rounded">
+                        <li class="list-group-item bg-light"><a href="https://supabase.com/docs/guides/auth/auth-smtp" target="_blank" class="text-decoration-none fw-medium"><i class="fa-solid fa-arrow-up-right-from-square me-2 fs-7"></i>Supabase: إرسال رسائل Auth عبر Custom SMTP</a></li>
+                        <li class="list-group-item"><a href="https://supabase.com/changelog/46599-changes-to-email-template-customisation-on-free-tier" target="_blank" class="text-decoration-none fw-medium"><i class="fa-solid fa-arrow-up-right-from-square me-2 fs-7"></i>Supabase: التغيير على تخصيص قوالب البريد في الخطة المجانية</a></li>
+                        <li class="list-group-item bg-light"><a href="https://supabase.com/docs/guides/auth/auth-email-templates" target="_blank" class="text-decoration-none fw-medium"><i class="fa-solid fa-arrow-up-right-from-square me-2 fs-7"></i>Supabase: قوالب رسائل المصادقة</a></li>
+                        <li class="list-group-item"><a href="https://supabase.com/docs/guides/deployment/going-into-prod" target="_blank" class="text-decoration-none fw-medium"><i class="fa-solid fa-arrow-up-right-from-square me-2 fs-7"></i>Supabase: قائمة التحقق قبل الإنتاج</a></li>
+                    </ul>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="content-card" id="sec-2">
+                    <h2 class="section-title"><i class="fa-solid fa-diagram-project"></i> 2. القرار الحالي</h2>
+                    <p>اعتمدنا المسار التالي:</p>
+                    <ol class="list-group list-group-numbered mb-3">
+                        <li class="list-group-item">استخدام Gmail SMTP مؤقتًا في مشروع Supabase التجريبي.</li>
+                        <li class="list-group-item">استخدام تسجيل دخول بلا كلمة مرور عبر رمز OTP بالبريد.</li>
+                        <li class="list-group-item">استخدام <code>{{ .Token }}</code> في القوالب بدل <code>{{ .ConfirmationURL }}</code>.</li>
+                        <li class="list-group-item">عدم اعتماد Gmail SMTP للإطلاق الإنتاجي.</li>
+                        <li class="list-group-item">اختيار مزود بريد معاملات متخصص قبل النشر العام.</li>
+                    </ol>
+
+                    <p class="fw-bold mb-2">البريد التجريبي والمرسل المؤقت:</p>
+                    <div class="code-block-wrapper">
+                        <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+                        <pre><code>office.prog2024@gmail.com</code></pre>
+                    </div>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="content-card" id="sec-3">
+                    <h2 class="section-title"><i class="fa-brands fa-google"></i> 3. إعداد Gmail قبل ربطه بـ Supabase</h2>
+                    
+                    <h5 class="fw-bold text-primary fs-6 mb-3">المتطلبات</h5>
+                    <ul class="list-unstyled pe-0">
+                        <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>1. تسجيل الدخول إلى حساب Google المخصص للإرسال.</li>
+                        <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>2. تفعيل التحقق بخطوتين (2-Step Verification).</li>
+                        <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>3. إنشاء App Password مخصص لـ Supabase.</li>
+                        <li class="mb-2"><i class="fa-solid fa-circle-check text-success me-2"></i>4. عدم استخدام كلمة مرور Gmail الأساسية داخل Supabase.</li>
+                    </ul>
+
+                    <p class="text-secondary">App Password هو رمز مخصص من Google للاستخدام مع البرامج التي تتصل بالحساب عبر SMTP. لا يظهر مجددًا بعد إنشائه عادةً، ويجب معاملته كسر.</p>
+
+                    <div class="callout-info my-3">
+                        <strong>المرجع الرسمي من Google:</strong><br>
+                        <a href="https://support.google.com/mail/answer/185833" target="_blank" class="text-decoration-none fw-bold"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Google: تسجيل الدخول باستخدام App Passwords</a>
+                    </div>
+
+                    <h5 class="fw-bold text-danger fs-6 mt-4 mb-3"><i class="fa-solid fa-lock me-1"></i> قواعد حماية App Password</h5>
+                    <div class="bg-light p-3 border rounded">
+                        <ul class="mb-0">
+                            <li class="mb-2">لا ترسله إلى Claude أو Codex أو أي عميل ذكاء اصطناعي.</li>
+                            <li class="mb-2">لا تضعه في ملف Markdown أو <code>.env</code> متتبع في Git.</li>
+                            <li class="mb-2">لا تلتقط صورة يظهر فيها.</li>
+                            <li class="mb-2">لا تضغط Reveal أثناء مشاركة الشاشة أو التقاط الصور.</li>
+                            <li class="mb-2">إذا ظهر في سجل أو صورة أو محادثة، ألغِه من حساب Google وأنشئ واحدًا جديدًا.</li>
+                            <li class="mb-0">تغيير كلمة مرور حساب Google يؤدي عادةً إلى إلغاء App Passwords الحالية.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SECTION 4 -->
+                <div class="content-card" id="sec-4">
+                    <h2 class="section-title"><i class="fa-solid fa-plug"></i> 4. ربط Gmail SMTP بمشروع Supabase التجريبي</h2>
+                    <p class="fw-bold mb-2">المسار في لوحة Supabase:</p>
+                    <div class="code-block-wrapper">
+                        <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+                        <pre><code>Authentication
+→ Emails
+→ SMTP Settings
+→ Enable Custom SMTP</code></pre>
+                    </div>
+
+                    <h6 class="fw-bold mt-4 mb-3 text-dark">الإعدادات المستخدمة:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-custom">
+                            <thead>
+                                <tr>
+                                    <th>الحقل</th>
+                                    <th>القيمة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Sender email address</td>
+                                    <td><code>office.prog2024@gmail.com</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Sender name</td>
+                                    <td><code>حضوري سمارت برو</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Host</td>
+                                    <td><code>smtp.gmail.com</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Port</td>
+                                    <td><code>465</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Username</td>
+                                    <td><code>office.prog2024@gmail.com</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Password</td>
+                                    <td>App Password من Google — لا يُوثق هنا</td>
+                                </tr>
+                                <tr>
+                                    <td>Minimum interval per user</td>
+                                    <td><code>60</code> ثانية</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-light p-3 rounded border mt-3">
+                        <strong class="d-block mb-2 text-dark"><i class="fa-solid fa-circle-info me-1 text-primary"></i> ملاحظات تشغيلية:</strong>
+                        <ul class="mb-0">
+                            <li>استخدم أرقامًا إنجليزية في حقلي المنفذ والفاصل: <code>465</code> و<code>60</code>.</li>
+                            <li>المنفذ <code>465</code> يستخدم اتصال SSL/TLS ضمنيًا.</li>
+                            <li>البديل هو المنفذ <code>587</code> مع STARTTLS إذا تعذر استخدام <code>465</code>.</li>
+                            <li>تحذير Supabase بأن Gmail بريد شخصي وليس مزود معاملات متوقع ومقبول في dev فقط.</li>
+                            <li>بعد الحفظ يرتفع الحد الافتراضي في Supabase عادةً إلى 30 رسالة Auth في الساعة، ويمكن مراجعته من صفحة Rate Limits.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SECTION 5 -->
+                <div class="content-card" id="sec-5">
+                    <h2 class="section-title"><i class="fa-solid fa-envelope-open-text"></i> 5. تحويل رسائل Supabase من Magic Link إلى OTP</h2>
+                    <p>يعتمد Supabase نوع الرسالة على المتغير المستخدم في القالب:</p>
+                    <ul>
+                        <li><code>{{ .ConfirmationURL }}</code> يرسل رابط Magic Link.</li>
+                        <li><code>{{ .Token }}</code> يرسل رمز OTP.</li>
+                        <li><code>{{ .TokenHash }}</code> مخصص لبناء تدفق رابط تحقق مخصص.</li>
+                    </ul>
+                    <p>لأن المستخدم الجديد قد يستقبل قالب <strong>Confirm signup</strong>، بينما المستخدم الموجود قد يستقبل قالب <strong>Magic Link / OTP</strong>، يجب تعديل القالبين.</p>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <div class="p-2 border rounded bg-light">
+                                <small class="text-muted d-block">مسار القالب الأول:</small>
+                                <code>Authentication → Emails → Confirm sign up</code>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-2 border rounded bg-light">
+                                <small class="text-muted d-block">مسار القالب الثاني:</small>
+                                <code>Authentication → Emails → Magic Link / OTP</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Template 1 -->
+                    <div class="border rounded p-3 mb-4">
+                        <h5 class="fw-bold text-dark fs-6"><i class="fa-solid fa-envelope me-2 text-primary"></i> قالب Confirm signup</h5>
+                        <p class="mb-1 fw-medium text-secondary">العنوان:</p>
+                        <div class="code-block-wrapper">
+                            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+                            <pre><code>{{ .Token }} رمز تأكيد حساب حضوري سمارت برو</code></pre>
+                        </div>
+                        <p class="mb-1 fw-medium text-secondary">المحتوى:</p>
+                        <div class="code-block-wrapper">
+                            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+                            <pre><code>&lt;h2&gt;تأكيد بريدك الإلكتروني&lt;/h2&gt;
+
+&lt;p&gt;مرحبًا،&lt;/p&gt;
+
+&lt;p&gt;استخدم رمز التحقق التالي لإكمال إنشاء حسابك في حضوري سمارت برو:&lt;/p&gt;
+
+&lt;p style="font-size: 30px; font-weight: bold; letter-spacing: 8px; direction: ltr;"&gt;
+  {{ .Token }}
+&lt;/p&gt;
+
+&lt;p&gt;ينتهي الرمز خلال مدة قصيرة، ولا تشاركه مع أي شخص.&lt;/p&gt;
+
+&lt;p&gt;إذا لم تطلب إنشاء الحساب، يمكنك تجاهل هذه الرسالة.&lt;/p&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Template 2 -->
+                    <div class="border rounded p-3 mb-3">
+                        <h5 class="fw-bold text-dark fs-6"><i class="fa-solid fa-envelope me-2 text-primary"></i> قالب Magic Link / OTP</h5>
+                        <p class="mb-1 fw-medium text-secondary">العنوان:</p>
+                        <div class="code-block-wrapper">
+                            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+                            <pre><code>{{ .Token }} رمز الدخول إلى حضوري سمارت برو</code></pre>
+                        </div>
+                        <p class="mb-1 fw-medium text-secondary">المحتوى:</p>
+                        <div class="code-block-wrapper">
+                            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+                            <pre><code>&lt;h2&gt;رمز تسجيل الدخول&lt;/h2&gt;
+
+&lt;p&gt;مرحبًا،&lt;/p&gt;
+
+&lt;p&gt;استخدم الرمز التالي لتسجيل الدخول إلى حضوري سمارت برو:&lt;/p&gt;
+
+&lt;p style="font-size: 30px; font-weight: bold; letter-spacing: 8px; direction: ltr;"&gt;
+  {{ .Token }}
+&lt;/p&gt;
+
+&lt;p&gt;ينتهي الرمز خلال مدة قصيرة، ولا تشاركه مع أي شخص.&lt;/p&gt;
+
+&lt;p&gt;إذا لم تطلب تسجيل الدخول، يمكنك تجاهل هذه الرسالة.&lt;/p&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="callout-warning mb-0">
+                        <i class="fa-solid fa-lightbulb me-1"></i> قد يكون رمز Supabase الحالي 6 أو 8 أرقام بحسب إعدادات وإصدار الخدمة. لا تثبت عدد الخانات في منطق الواجهة دون الرجوع إلى الإعداد الفعلي والعقد المختبر.
+                    </div>
+                </div>
+
+                <!-- SECTION 6 -->
+                <div class="content-card" id="sec-6">
+                    <h2 class="section-title"><i class="fa-solid fa-vial-circle-check"></i> 6. طريقة الاختبار الآمن</h2>
+                    <ol class="list-group list-group-numbered mb-4">
+                        <li class="list-group-item">استخدم مشروع dev فقط.</li>
+                        <li class="list-group-item">استخدم بريدًا تجريبيًا يمكنك الوصول إليه.</li>
+                        <li class="list-group-item">اطلب OTP مرة واحدة.</li>
+                        <li class="list-group-item">تحقق أن الرسالة تحتوي رمزًا لا رابطًا.</li>
+                        <li class="list-group-item">أدخل الرمز مرة واحدة في العميل الذي بدأ عملية التسجيل.</li>
+                        <li class="list-group-item">لا تطبع الرمز في السجل.</li>
+                        <li class="list-group-item">لا تطبع <code>access_token</code> أو <code>refresh_token</code> أو JWT بعد نجاح التحقق.</li>
+                        <li class="list-group-item">تحقق أن إعادة استخدام الرمز مرفوضة.</li>
+                        <li class="list-group-item">راجع Auth Logs عند فشل التسليم.</li>
+                        <li class="list-group-item">لا تكرر الإرسال بسرعة؛ احترم Minimum interval وRate Limits.</li>
+                    </ol>
+
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-list-check me-1 text-primary"></i> حالات يجب اختبارها:</h6>
+                    <div class="row row-cols-1 row-cols-md-2 g-2">
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>مستخدم جديد: قالب Confirm signup.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>مستخدم موجود: قالب Magic Link / OTP.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>رمز صحيح.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>رمز خاطئ.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>رمز منتهي.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>إعادة استخدام الرمز.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>طلب رمز جديد بعد المدة المحددة.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>توقف SMTP أو رفض بيانات الدخول.</div></div>
+                        <div class="col"><div class="p-2 border rounded"><i class="fa-regular fa-square-check me-2 text-primary"></i>وصول الرسالة إلى Spam.</div></div>
+                    </div>
+                </div>
+
+                <!-- SECTION 7 -->
+                <div class="content-card" id="sec-7">
+                    <h2 class="section-title"><i class="fa-solid fa-key"></i> 7. ما الذي حدث مع مفاتيح Supabase؟</h2>
+                    <p>أثناء الفحص أعاد أمر Supabase CLI مفتاح <code>service_role</code> القديم كاملًا في المخرجات رغم عدم استخدام <code>--reveal</code>. عومل ذلك كتسريب أمني، ولم يُستخدم المفتاح في أي طلب ولم يُكتب في ملف.</p>
+                    
+                    <h6 class="fw-bold text-dark mb-2">مسار الاحتواء الذي نُفذ على dev:</h6>
+                    <ol class="list-group list-group-numbered mb-3">
+                        <li class="list-group-item">نقل Edge Functions من مفاتيح Legacy إلى المفاتيح الجديدة:
+                            <ul class="mt-1 text-muted">
+                                <li><code>SUPABASE_PUBLISHABLE_KEYS</code></li>
+                                <li><code>SUPABASE_SECRET_KEYS</code></li>
+                            </ul>
+                        </li>
+                        <li class="list-group-item">استخدام المفتاح المسمى <code>default</code> من JSON البيئة.</li>
+                        <li class="list-group-item">إعادة نشر الخدمات الأربع واختبارها.</li>
+                        <li class="list-group-item">تعطيل Legacy JWT-based API keys (<code>anon</code> و<code>service_role</code>) من Dashboard.</li>
+                        <li class="list-group-item">عدم تدوير JWT Signing Key.</li>
+                        <li class="list-group-item">التحقق بعد التعطيل:
+                            <ul class="mt-1 text-muted">
+                                <li><code>get-app-config</code> أعاد <code>200</code>.</li>
+                                <li>الخدمات التجارية دون Authorization أعادت <code>401 AUTH_REQUIRED</code>.</li>
+                                <li>الخدمات الأربع بقيت ACTIVE.</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <div class="callout-warning mb-3">
+                        <strong class="d-block mb-1"><i class="fa-solid fa-shield-halved me-1"></i> قواعد مستقبلية:</strong>
+                        <ul class="mb-0">
+                            <li>لا تستخدم <code>supabase projects api-keys</code> في جلسة مسجلة أو مخرجات مشتركة.</li>
+                            <li>لا تعرض قيمة <code>sb_secret_...</code> أو <code>service_role</code>.</li>
+                            <li>العميل العام يستخدم Publishable key فقط.</li>
+                            <li>الخدمات الخلفية تستخدم Secret key فقط.</li>
+                            <li>لا يوضع أي Secret key داخل إضافة Chrome أو Flutter أو الموقع العام.</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a href="https://supabase.com/docs/guides/getting-started/api-keys" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>فهم مفاتيح API</a>
+                        <a href="https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-arrow-up-right-from-square me-1"></i>الانتقال إلى Publishable وSecret keys</a>
+                    </div>
+                </div>
+
+                <!-- SECTION 8 -->
+                <div class="content-card" id="sec-8">
+                    <h2 class="section-title"><i class="fa-solid fa-triangle-exclamation"></i> 8. لماذا Gmail حل مؤقت فقط؟</h2>
+                    <p>Gmail مصمم أساسًا للبريد الشخصي، لا للبريد الآلي عالي الاعتمادية. قد تظهر مشكلات مثل:</p>
+                    <div class="row g-2">
+                        <div class="col-md-6"><div class="p-3 border rounded bg-light"><i class="fa-solid fa-ban text-danger me-2"></i>حدود إرسال يومية أو مؤقتة.</div></div>
+                        <div class="col-md-6"><div class="p-3 border rounded bg-light"><i class="fa-solid fa-user-slash text-danger me-2"></i>حظر أو تعليق الحساب عند نشاط يبدو آليًا.</div></div>
+                        <div class="col-md-6"><div class="p-3 border rounded bg-light"><i class="fa-solid fa-chart-line text-danger me-2"></i>ضعف أدوات السجلات والتحليل مقارنة بمزودي البريد المتخصصين.</div></div>
+                        <div class="col-md-6"><div class="p-3 border rounded bg-light"><i class="fa-solid fa-globe text-danger me-2"></i>صعوبة ضبط سمعة نطاق المنتج لأن المرسل <code>gmail.com</code>.</div></div>
+                        <div class="col-12"><div class="p-3 border rounded bg-light"><i class="fa-solid fa-envelope-circle-check text-danger me-2"></i>عدم وجود فصل واضح بين بريد المصادقة وبريد المراسلات الشخصية.</div></div>
+                    </div>
+                    <p class="mt-3 mb-0 text-muted">لذلك يستخدم فقط لتجربة dev المحدودة، ثم يُستبدل قبل الإطلاق.</p>
+                </div>
+
+                <!-- SECTION 9 -->
+                <div class="content-card" id="sec-9">
+                    <h2 class="section-title"><i class="fa-solid fa-server"></i> 9. البدائل المناسبة للإنتاج</h2>
+                    <p>يدعم Supabase أي مزود يقدم SMTP. القائمة الرسمية غير الحصرية تشمل:</p>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge bg-secondary p-2">Resend</span>
+                        <span class="badge bg-secondary p-2">Amazon SES</span>
+                        <span class="badge bg-secondary p-2">Postmark</span>
+                        <span class="badge bg-secondary p-2">Twilio SendGrid</span>
+                        <span class="badge bg-secondary p-2">ZeptoMail</span>
+                        <span class="badge bg-secondary p-2">Brevo</span>
+                    </div>
+
+                    <h6 class="fw-bold text-dark mb-3">مقارنة عملية أولية:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-custom">
+                            <thead>
+                                <tr>
+                                    <th>المزود</th>
+                                    <th>مناسب عندما</th>
+                                    <th>ملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Resend</strong></td>
+                                    <td>تريد إعدادًا حديثًا وبسيطًا وتكاملًا واضحًا مع Supabase</td>
+                                    <td>يدعم SMTP وتكامل Supabase؛ يتطلب نطاقًا تملكه والتحقق من DNS</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Postmark</strong></td>
+                                    <td>الأولوية القصوى لبريد المعاملات وسرعة التسليم</td>
+                                    <td>متخصص في البريد التشغيلي؛ راجع الأسعار الحالية</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Amazon SES</strong></td>
+                                    <td>تتوقع حجمًا كبيرًا وتريد تكلفة منخفضة نسبياً</td>
+                                    <td>قوي لكنه يحتاج إعداد AWS وDNS وخروجًا من Sandbox</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Brevo</strong></td>
+                                    <td>تريد بريد معاملات مع لوحة إدارة وخيارات إضافية</td>
+                                    <td>افحص حدود الخطة وسياسة SMTP في بلدك</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SendGrid</strong></td>
+                                    <td>تريد مزودًا واسع الانتشار وواجهات وتقارير</td>
+                                    <td>راجع تغيرات الخطط والحدود وسمعة الحساب</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ZeptoMail</strong></td>
+                                    <td>تريد خدمة معاملات منفصلة عن التسويق</td>
+                                    <td>افحص الدعم والمنطقة والتكلفة الحالية</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mailtrap</strong></td>
+                                    <td>تريد اختبار الرسائل والقوالب دون إرسالها لمستخدمين حقيقيين</td>
+                                    <td>ممتاز لبيئات الاختبار، وليس البديل النهائي وحده للإنتاج</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h6 class="fw-bold text-dark mt-4 mb-2">مثال Resend SMTP من توثيقه الحالي:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-custom">
+                            <thead>
+                                <tr>
+                                    <th>الحقل</th>
+                                    <th>القيمة العامة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Host</td>
+                                    <td><code>smtp.resend.com</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Port SSL</td>
+                                    <td><code>465</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Port STARTTLS</td>
+                                    <td><code>587</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Username</td>
+                                    <td><code>resend</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Password</td>
+                                    <td>API key سري من Resend</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-3">
+                        <strong class="d-block mb-1 text-dark">المراجع:</strong>
+                        <ul class="list-unstyled mb-0">
+                            <li><a href="https://resend.com/docs/send-with-smtp" target="_blank" class="text-decoration-none"><i class="fa-solid fa-link me-1"></i>Resend: SMTP</a></li>
+                            <li><a href="https://resend.com/docs/knowledge-base/getting-started-with-resend-and-supabase" target="_blank" class="text-decoration-none"><i class="fa-solid fa-link me-1"></i>Resend: التكامل مع Supabase</a></li>
+                            <li><a href="https://supabase.com/docs/guides/auth/auth-smtp" target="_blank" class="text-decoration-none"><i class="fa-solid fa-link me-1"></i>Supabase: مزودو SMTP المقترحون</a></li>
+                            <li><a href="https://supabase.com/docs/guides/troubleshooting/not-receiving-auth-emails-from-the-supabase-project-OFSNzw" target="_blank" class="text-decoration-none"><i class="fa-solid fa-link me-1"></i>Supabase: تشخيص عدم وصول رسائل Auth</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SECTION 10 -->
+                <div class="content-card" id="sec-10">
+                    <h2 class="section-title"><i class="fa-solid fa-sliders"></i> 10. معايير اختيار مزود البريد النهائي</h2>
+                    <p>لا تعتمد على السعر وحده. قارن:</p>
+                    <div class="row row-cols-1 row-cols-md-2 g-2">
+                        <div class="col"><div class="p-2 border rounded">1. وصول الرسائل إلى Gmail وOutlook داخل السعودية.</div></div>
+                        <div class="col"><div class="p-2 border rounded">2. دعم SMTP رسمي.</div></div>
+                        <div class="col"><div class="p-2 border rounded">3. سهولة الربط مع Supabase Auth.</div></div>
+                        <div class="col"><div class="p-2 border rounded">4. وجود Logs وأسباب الرفض والارتداد.</div></div>
+                        <div class="col"><div class="p-2 border rounded">5. دعم DKIM وSPF وDMARC.</div></div>
+                        <div class="col"><div class="p-2 border rounded">6. إمكانية استخدام نطاق فرعي مثل <code>auth.example.com</code>.</div></div>
+                        <div class="col"><div class="p-2 border rounded">7. حدود الإرسال في الخطة المجانية والمدفوعة.</div></div>
+                        <div class="col"><div class="p-2 border rounded">8. تكلفة 1,000 و10,000 و100,000 رسالة شهريًا.</div></div>
+                        <div class="col"><div class="p-2 border rounded">9. سياسة الرسائل الآلية والمصادقة.</div></div>
+                        <div class="col"><div class="p-2 border rounded">10. موقع تخزين البيانات والخصوصية.</div></div>
+                        <div class="col"><div class="p-2 border rounded">11. الدعم الفني وسرعة معالجة الحظر.</div></div>
+                        <div class="col"><div class="p-2 border rounded">12. سهولة تدوير المفاتيح دون توقف.</div></div>
+                        <div class="col"><div class="p-2 border rounded">13. Webhooks للـdelivery وbounce وcomplaint.</div></div>
+                        <div class="col"><div class="p-2 border rounded">14. إمكانية فصل بريد Auth عن البريد التسويقي.</div></div>
+                    </div>
+
+                    <h6 class="fw-bold text-dark mt-4 mb-2">إعداد DNS المطلوب عادةً:</h6>
+                    <p>قبل الإنتاج يجب امتلاك نطاق وإضافة السجلات التي يحددها المزود:</p>
+                    <ul>
+                        <li>SPF</li>
+                        <li>DKIM</li>
+                        <li>DMARC</li>
+                        <li>Return-Path أو bounce domain إن طُلب</li>
+                    </ul>
+
+                    <div class="callout-info mb-0">
+                        <strong class="d-block mb-1">توصية Supabase:</strong>
+                        توصية Supabase هي فصل بريد المصادقة عن التسويق، مثل: <code>no-reply@auth.example.com</code> مع نطاق آخر للرسائل التسويقية. كما توصي بوجود مزود احتياطي وخطة انتقال إذا تعطل المزود الأساسي.
+                    </div>
+                </div>
+
+                <!-- SECTION 11 -->
+                <div class="content-card" id="sec-11">
+                    <h2 class="section-title"><i class="fa-solid fa-list-check"></i> 11. توصية مرحلية لـ HSP</h2>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="h-100 p-3 border rounded bg-light border-primary">
+                                <h5 class="fw-bold text-primary fs-6 mb-2"><i class="fa-solid fa-code me-1"></i> الآن — dev</h5>
+                                <ul class="ps-3 mb-0 fs-7">
+                                    <li class="mb-1">Gmail SMTP + App Password.</li>
+                                    <li class="mb-1">حد إرسال منخفض.</li>
+                                    <li class="mb-1">بريد تجريبي واحد أو عدد محدود جدًا.</li>
+                                    <li class="mb-0">قوالب OTP عربية.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="h-100 p-3 border rounded bg-light border-warning">
+                                <h5 class="fw-bold text-warning fs-6 mb-2"><i class="fa-solid fa-vial me-1"></i> قبل الاختبار العام</h5>
+                                <ul class="ps-3 mb-0 fs-7">
+                                    <li class="mb-1">شراء/اعتماد نطاق المنتج.</li>
+                                    <li class="mb-1">اختيار Resend أو Postmark أو SES بعد مقارنة حديثة.</li>
+                                    <li class="mb-1">إعداد نطاق فرعي مخصص للمصادقة.</li>
+                                    <li class="mb-1">تفعيل SPF/DKIM/DMARC.</li>
+                                    <li class="mb-1">اختبار الوصول إلى Gmail وOutlook.</li>
+                                    <li class="mb-0">تفعيل CAPTCHA وسياسات منع إساءة استخدام OTP عند فتح التسجيل للعامة.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="h-100 p-3 border rounded bg-light border-success">
+                                <h5 class="fw-bold text-success fs-6 mb-2"><i class="fa-solid fa-rocket me-1"></i> قبل الإنتاج</h5>
+                                <ul class="ps-3 mb-0 fs-7">
+                                    <li class="mb-1">استخدام مزود معاملات متخصص.</li>
+                                    <li class="mb-1">عدم استخدام Gmail.</li>
+                                    <li class="mb-1">مراجعة Rate Limits في Supabase والمزود.</li>
+                                    <li class="mb-1">إعداد مراقبة للـbounce والـcomplaint.</li>
+                                    <li class="mb-1">توثيق خطة التراجع والمزود الاحتياطي.</li>
+                                    <li class="mb-0">اختبار القوالب العربية والإنجليزية على الجوال والكمبيوتر.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 12 -->
+                <div class="content-card" id="sec-12">
+                    <h2 class="section-title"><i class="fa-solid fa-robot"></i> 12. أمر جاهز لأي عميل ذكاء اصطناعي للبحث عن المزود</h2>
+                    <p>انسخ الأمر التالي كما هو، وغيّر حجم الرسائل المتوقع أو اسم النطاق إذا لزم:</p>
+                    
+                    <div class="code-block-wrapper">
+                        <button class="copy-btn" onclick="copyText(this)">نسخ الأمر كاملًا</button>
+                        <pre><code>أريد تقرير بحث حديث ومفصل لاختيار مزود بريد معاملات Transactional Email لمشروع حضوري سمارت برو.
+
+السياق:
+- المشروع يستخدم Supabase Auth.
+- تسجيل الدخول بلا كلمة مرور عبر Email OTP.
+- نحتاج Custom SMTP متوافقًا رسميًا مع Supabase.
+- المستخدمون المستهدفون في المملكة العربية السعودية.
+- الرسائل الأساسية: تأكيد التسجيل، رمز الدخول OTP، استعادة الحساب، وتغييرات الأمان.
+- الحجم الأولي المتوقع: أقل من 10,000 رسالة شهريًا، مع قابلية النمو.
+- Gmail SMTP مستخدم مؤقتًا في dev فقط، ويجب عدم اعتماده للإنتاج.
+- نريد استخدام نطاق فرعي مخصص لبريد المصادقة مثل auth.example.com.
+
+ابحث في المصادر الرسمية الحالية فقط، ولا تعتمد على معلومات الأسعار أو الحدود المحفوظة في ذاكرتك. تحقق من تاريخ كل مصدر.
+
+قارن على الأقل:
+- Resend
+- Postmark
+- Amazon SES
+- Brevo
+- Twilio SendGrid
+- ZeptoMail
+- Mailgun إن كان متاحًا ومناسبًا
+- أي مزود آخر تراه أفضل للسعودية أو لـSupabase
+
+لكل مزود افحص:
+1. دعم SMTP وتوافقه مع Supabase Auth.
+2. خطوات الإعداد الفعلية.
+3. ضرورة امتلاك نطاق والتحقق منه.
+4. دعم SPF وDKIM وDMARC.
+5. حدود الخطة المجانية الحالية.
+6. الأسعار الحالية لـ1,000 و10,000 و100,000 رسالة شهريًا.
+7. حدود المعدل اليومي والساعة والثانية.
+8. سجلات التسليم والـbounce والـcomplaint.
+9. Webhooks.
+10. سهولة تدوير المفاتيح.
+11. جودة التسليم إلى Gmail وOutlook.
+12. توفر الخدمة والدعم في السعودية.
+13. الخصوصية وموقع معالجة البيانات إن كان منشورًا رسميًا.
+14. مخاطر إغلاق الحساب أو الحاجة لمراجعة يدوية.
+15. سهولة الانتقال منه إلى مزود آخر.
+
+قدّم:
+- جدول مقارنة موحد.
+- روابط مباشرة إلى صفحات الأسعار والتوثيق الرسمية.
+- تاريخ الوصول لكل مصدر.
+- فصلًا واضحًا بين الحقائق المؤكدة والاستنتاجات.
+- أفضل خيار لبيئة dev.
+- أفضل خيار للإنتاج الأولي.
+- أفضل خيار عند التوسع.
+- خيارًا احتياطيًا.
+- تكلفة شهرية متوقعة في ثلاثة سيناريوهات.
+- خطة انتقال من Gmail SMTP إلى المزود المقترح دون توقف.
+- خطوات DNS المطلوبة.
+- إعدادات SMTP المقترحة لـSupabase دون عرض أي مفتاح سري.
+- قائمة مخاطر ونقاط تحقق قبل القرار.
+
+لا تنفذ أي تسجيل أو شراء أو تعديل DNS أو إعداد Supabase. المطلوب بحث وتقرير للقراءة فقط.</code></pre>
+                    </div>
+                </div>
+
+                <!-- SECTION 13 -->
+                <div class="content-card" id="sec-13">
+                    <h2 class="section-title"><i class="fa-solid fa-square-check"></i> 13. قائمة تحقق مختصرة</h2>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <h5 class="fw-bold text-dark fs-6 mb-3"><i class="fa-brands fa-google text-danger me-2"></i> Gmail dev</h5>
+                                
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk1">
+                                    <label class="form-check-label" for="chk1">التحقق بخطوتين مفعل.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk2">
+                                    <label class="form-check-label" for="chk2">App Password منفصل لـSupabase.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk3">
+                                    <label class="form-check-label" for="chk3">Custom SMTP مفعل في مشروع dev فقط.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk4">
+                                    <label class="form-check-label" for="chk4">المنفذ والفاصل مكتوبان بأرقام إنجليزية.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk5">
+                                    <label class="form-check-label" for="chk5">Confirm signup يستخدم <code>{{ .Token }}</code>.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk6">
+                                    <label class="form-check-label" for="chk6">Magic Link / OTP يستخدم <code>{{ .Token }}</code>.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk7">
+                                    <label class="form-check-label" for="chk7">الرمز يصل ويُقبل مرة واحدة.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="chk8">
+                                    <label class="form-check-label" for="chk8">لا أسرار في الصور أو السجلات.</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 h-100">
+                                <h5 class="fw-bold text-dark fs-6 mb-3"><i class="fa-solid fa-server text-success me-2"></i> مزود الإنتاج</h5>
+                                
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk1">
+                                    <label class="form-check-label" for="pchk1">المزود اختير بعد بحث حديث.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk2">
+                                    <label class="form-check-label" for="pchk2">نطاق المنتج مملوك.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk3">
+                                    <label class="form-check-label" for="pchk3">نطاق فرعي للمصادقة.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk4">
+                                    <label class="form-check-label" for="pchk4">SPF وDKIM وDMARC صحيحة.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk5">
+                                    <label class="form-check-label" for="pchk5">التسليم مختبر على Gmail وOutlook.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk6">
+                                    <label class="form-check-label" for="pchk6">Rate Limits مضبوطة.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk7">
+                                    <label class="form-check-label" for="pchk7">bounce وcomplaint مراقبان.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk8">
+                                    <label class="form-check-label" for="pchk8">مفتاح SMTP محفوظ في Supabase فقط.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk9">
+                                    <label class="form-check-label" for="pchk9">توجد خطة تدوير ومزود احتياطي.</label>
+                                </div>
+                                <div class="checklist-item form-check">
+                                    <input class="form-check-input" type="checkbox" id="pchk10">
+                                    <label class="form-check-label" for="pchk10">Gmail أزيل من إعداد الإنتاج.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function copyText(buttonElement) {
+            const wrapper = buttonElement.closest('.code-block-wrapper');
+            const code = wrapper.querySelector('code').innerText;
+            
+            // Clipboard copy with fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                const originalText = buttonElement.innerText;
+                buttonElement.innerText = 'تم النسخ! ✓';
+                buttonElement.classList.add('bg-success');
+                
+                setTimeout(() => {
+                    buttonElement.innerText = originalText;
+                    buttonElement.classList.remove('bg-success');
+                }, 2000);
+            } catch (err) {
+                buttonElement.innerText = 'فشل النسخ';
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+    </script>
+</body>
+</html>
