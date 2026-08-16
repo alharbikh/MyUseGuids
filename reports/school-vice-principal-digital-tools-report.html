@@ -18,16 +18,77 @@
       --bg-surface: #f8fafc;
       --card-border: #e2e8f0;
     }
-    body {font-family:'Cairo',sans-serif;background-color:var(--bg-surface);color:#1e293b;line-height:1.7}
-    .hero-header {background:linear-gradient(135deg,#104f55 0%,#01200f 100%);color:#fff;padding:45px 20px;border-radius:0 0 24px 24px;box-shadow:0 10px 25px rgba(16,79,85,.15)}
-    .custom-card {background:#fff;border:1px solid var(--card-border);border-radius:12px;padding:24px;transition:all .25s ease;height:100%;box-shadow:0 2px 6px rgba(0,0,0,.02)}
-    .custom-card:hover {transform:translateY(-4px);box-shadow:0 12px 20px rgba(0,0,0,.06);border-color:var(--secondary-color)}
-    .section-title {position:relative;padding-bottom:12px;margin-bottom:24px;font-weight:800;color:var(--primary-color)}
-    .section-title::after {content:'';position:absolute;bottom:0;right:0;width:60px;height:4px;background-color:var(--secondary-color);border-radius:2px}
-    .font-spec-badge {background-color:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;font-size:.85rem;padding:4px 10px;border-radius:6px;font-family:'Tajawal',sans-serif}
-    .table thead th {background-color:#f1f5f9;color:var(--primary-color);font-weight:700;text-align:center;vertical-align:middle}
-    .table tbody td {vertical-align:middle}
-    .code-tag {background-color:#f1f5f9;color:#0f172a;padding:2px 6px;border-radius:4px;font-size:.85rem;font-family:monospace}
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--bg-surface);
+      color: #1e293b;
+      line-height: 1.7;
+    }
+    .hero-header {
+      background: linear-gradient(135deg, #104f55 0%, #01200f 100%);
+      color: #ffffff;
+      padding: 45px 20px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 10px 25px rgba(16, 79, 85, 0.15);
+    }
+    .custom-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.25s ease;
+      height: 100%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .custom-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.06);
+      border-color: var(--secondary-color);
+    }
+    .section-title {
+      position: relative;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      font-weight: 800;
+      color: var(--primary-color);
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60px;
+      height: 4px;
+      background-color: var(--secondary-color);
+      border-radius: 2px;
+    }
+    .font-spec-badge {
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .table thead th {
+      background-color: #f1f5f9;
+      color: var(--primary-color);
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .table tbody td {
+      vertical-align: middle;
+    }
+    .code-tag {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-family: monospace;
+    }
     .reports-nav{position:sticky;top:0;z-index:9999;background:rgba(255,255,255,.97);border-bottom:1px solid #e2e8f0;box-shadow:0 2px 10px rgba(0,0,0,.05)}
     .reports-nav .inner{max-width:1280px;margin:auto;padding:9px 16px;display:flex;justify-content:space-between;gap:10px;align-items:center}
     .reports-nav a{background:#104f55;color:#fff;text-decoration:none;padding:7px 12px;border-radius:9px;font-weight:700}
@@ -37,15 +98,254 @@
 </head>
 <body>
 <nav class="reports-nav"><div class="inner"><span>MyUseGuids — تقرير وكيل المدرسة</span><a href="./index.html">⌂ فهرس التقارير</a></div></nav>
-<header class="hero-header mb-5"><div class="container text-center"><span class="badge bg-light text-dark px-3 py-2 mb-3 fw-bold">التعليم العام - المملكة العربية السعودية</span><h1 class="fw-bold mb-3">دليل المنصات والمواقع والإضافات المماثلة لوكيل المدرسة</h1><p class="lead mb-0 text-light opacity-90">تحليل المنظومات الرقمية المساندة، حصر النماذج الإجرائية، والمواصفات الطباعية المعتمدة (الخطوط والأحجام)</p></div></header>
-<main class="container mb-5">
-<section class="mb-5"><h3 class="section-title">1. المنصات والمواقع والإضافات المماثلة في التعليم السعودي</h3><div class="row g-4">
-<div class="col-md-6 col-lg-4"><div class="custom-card"><div class="d-flex justify-content-between align-items-center mb-3"><span class="badge bg-primary">منصة ويب متخصصة</span><small class="text-muted">التعليم العام</small></div><h5 class="fw-bold text-dark">منصة تواصل (2wasl)</h5><p class="text-muted small">منظومة رقمية رائدة تقدم نماذج تفاعلية واستمارات خطط التحسين المدرسي والتطوير، مع توفير أدوات ربط إلكترونية للمدارس وإدارة النماذج الإدارية وتصديرها.</p><hr><h6 class="fw-bold small text-primary mb-2">أبرز الخدمات والنماذج:</h6><ul class="small ps-3 mb-0 text-muted"><li>نماذج خطط التحسين والتطوير المدرسي التفاعلية.</li><li>استمارات متابعة مؤشرات الأداء والانضباط المدرسي.</li><li>سجلات الشواهد وتوثيق الفعاليات المدرسية.</li></ul></div></div>
-<div class="col-md-6 col-lg-4"><div class="custom-card"><div class="d-flex justify-content-between align-items-center mb-3"><span class="badge bg-success">حلول إدارية وميدانية</span><small class="text-muted">شؤون المعلمين والطلاب</small></div><h5 class="fw-bold text-dark">أنظمة إدارة ومساندة الوكيل الميداني</h5><p class="text-muted small">برمجيات وحلول مصممة لأتمتة المهام اليومية لوكيل الشؤون التعليمية والمدرسية وشؤون الطلاب وفق الدليل التنظيمي والإجرائي لوزارة التعليم.</p><hr><h6 class="fw-bold small text-primary mb-2">أبرز الخدمات والنماذج:</h6><ul class="small ps-3 mb-0 text-muted"><li>أتمتة جداول حصص الانتظار وتوزيع الحصص الشاغرة.</li><li>سجلات الإشراف والمناوبة اليومية عند البوابات والفسح.</li><li>إدارة سجلات دوام الموظفين والتأخر والانصراف.</li></ul></div></div>
-<div class="col-md-6 col-lg-4"><div class="custom-card"><div class="d-flex justify-content-between align-items-center mb-3"><span class="badge bg-info text-dark">إضافات متصفح (Extensions)</span><small class="text-muted">نظام نور ومنصة مدرستي</small></div><h5 class="fw-bold text-dark">إضافات المتصفح لنظام نور ومدرستي</h5><p class="text-muted small">أدوات مساعدة لمتصفحات Chrome و Edge تعمل على تسريع رصد الغياب الجماعي، سحب التقارير، وتوليد كشوفات الحضور تلقائياً بنقرة زر.</p><hr><h6 class="fw-bold small text-primary mb-2">أبرز الخدمات والنماذج:</h6><ul class="small ps-3 mb-0 text-muted"><li>الرصد التلقائي للغياب والتأخر اليومي في نظام نور.</li><li>استخراج مسيرات الدوام وسجلات الطلاب بتنسيق Excel/PDF.</li><li>توليد رسائل وإشعارات الغياب الفورية عبر تطبيق WhatsApp.</li></ul></div></div>
-</div></section>
-<section class="mb-5"><h3 class="section-title">2. مجالات الاستخدام والنماذج المؤهلة للأتمتة والدمج</h3><div class="row g-4"><div class="col-md-6"><div class="custom-card"><h5 class="fw-bold text-primary mb-3">في ماذا يمكننا استخدام هذه المنظومات؟</h5><p><strong>الأرشفة السحابية وتقليل الهدر الورقي:</strong> تحويل السجلات الورقية الثقيلة إلى نماذج رقمية تفاعلية.</p><p><strong>سرعة إعداد وطباعة التقارير الرسمية:</strong> توليد محاضر الانضباط وإشعارات أولياء الأمور وجداول الانتظار اليومية.</p><p><strong>الامتثال للوائح وزارة التعليم:</strong> دعم تطبيق قواعد السلوك والمواظبة والدليل الإجرائي.</p></div></div><div class="col-md-6"><div class="custom-card"><h5 class="fw-bold text-primary mb-3">النماذج المؤهلة للاستخدام والأتمتة</h5><div class="table-responsive"><table class="table table-sm table-bordered"><thead><tr><th>المجال</th><th>النماذج المؤهلة</th><th>مستوى الجاهزية</th></tr></thead><tbody class="small"><tr><td class="fw-bold">دوام الموظفين</td><td>نموذج (17/17ب)، نموذج (18) للتنبيه، سجل الاستئذان</td><td><span class="badge bg-success">جاهز ومجرد</span></td></tr><tr><td class="fw-bold">شؤون الطلاب</td><td>رصد الغياب اليومي، تعهد المواظبة، بطاقة الاستئذان</td><td><span class="badge bg-success">جاهز ومجرد</span></td></tr><tr><td class="fw-bold">الشؤون التعليمية</td><td>جدول الانتظار، جدول المناوبة، سجل البيئة الصفية</td><td><span class="badge bg-success">جاهز ومجرد</span></td></tr><tr><td class="fw-bold">التطوير والتخطيط</td><td>الخطة التشغيلية للوكيل، خطة التحسين والتطوير</td><td><span class="badge bg-success">جاهز ومجرد</span></td></tr></tbody></table></div></div></div></div></section>
-<section class="mb-5"><h3 class="section-title">3. المواصفات الطباعية الرسمية للنماذج (أنواع وأحجام الخطوط)</h3><p class="text-muted">لضمان خروج النماذج والقوالب بنفس الدقة والتصميم الإداري المعتمد، يوضح التقرير المقاسات المقترحة للعناوين والجداول والحقول والهوامش والتواقيع باستخدام Cairo وTajawal.</p></section>
-<section><h3 class="section-title">4. قواعد التنسيق البرمجي (CSS Standards) للطباعة والقوالب</h3><div class="custom-card"><p class="small text-muted mb-3">يحتوي التقرير الأصلي على قواعد CSS مقترحة لضبط A4 والخطوط والجداول أثناء الطباعة.</p></div></section>
-</main><footer class="text-center py-4 border-top bg-white text-muted small"><div class="container">منظومة نماذج وأدوات وكيل المدرسة | متوافق مع الدليل التنظيمي والإجرائي لمدارس التعليم العام بالمملكة العربية السعودية</div></footer>
-</body></html>
+
+  <!-- رأس الصفحة -->
+  <header class="hero-header mb-5">
+    <div class="container text-center">
+      <span class="badge bg-light text-dark px-3 py-2 mb-3 fw-bold">التعليم العام - المملكة العربية السعودية</span>
+      <h1 class="fw-bold mb-3">دليل المنصات والمواقع والإضافات المماثلة لوكيل المدرسة</h1>
+      <p class="lead mb-0 text-light opacity-90">تحليل المنظومات الرقمية المساندة، حصر النماذج الإجرائية، والمواصفات الطباعية المعتمدة (الخطوط والأحجام)</p>
+    </div>
+  </header>
+
+  <main class="container mb-5">
+
+    <!-- القسم الأول: المنصات والمواقع والإضافات المماثلة -->
+    <section class="mb-5">
+      <h3 class="section-title">1. المنصات والمواقع والإضافات المماثلة في التعليم السعودي</h3>
+      <div class="row g-4">
+        
+        <div class="col-md-6 col-lg-4">
+          <div class="custom-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="badge bg-primary">منصة ويب متخصصة</span>
+              <small class="text-muted">التعليم العام</small>
+            </div>
+            <h5 class="fw-bold text-dark">منصة تواصل (2wasl)</h5>
+            <p class="text-muted small">منظومة رقمية رائدة تقدم نماذج تفاعلية واستمارات خطط التحسين المدرسي والتطوير، مع توفير أدوات ربط إلكترونية للمدارس وإدارة النماذج الإدارية وتصديرها.</p>
+            <hr>
+            <h6 class="fw-bold small text-primary mb-2">أبرز الخدمات والنماذج:</h6>
+            <ul class="small ps-3 mb-0 text-muted">
+              <li>نماذج خطط التحسين والتطوير المدرسي التفاعلية.</li>
+              <li>استمارات متابعة مؤشرات الأداء والانضباط المدرسي.</li>
+              <li>سجلات الشواهد وتوثيق الفعاليات المدرسية.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="custom-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="badge bg-success">حلول إدارية وميدانية</span>
+              <small class="text-muted">شؤون المعلمين والطلاب</small>
+            </div>
+            <h5 class="fw-bold text-dark">أنظمة إدارة ومساندة الوكيل الميداني</h5>
+            <p class="text-muted small">برمجيات وحلول مصممة لأتمتة المهام اليومية لوكيل الشؤون التعليمية والمدرسية وشؤون الطلاب وفق الدليل التنظيمي والإجرائي لوزارة التعليم.</p>
+            <hr>
+            <h6 class="fw-bold small text-primary mb-2">أبرز الخدمات والنماذج:</h6>
+            <ul class="small ps-3 mb-0 text-muted">
+              <li>أتمتة جداول حصص الانتظار وتوزيع الحصص الشاغرة.</li>
+              <li>سجلات الإشراف والمناوبة اليومية عند البوابات والفسح.</li>
+              <li>إدارة سجلات دوام الموظفين والتأخر والانصراف.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="custom-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span class="badge bg-info text-dark">إضافات متصفح (Extensions)</span>
+              <small class="text-muted">نظام نور ومنصة مدرستي</small>
+            </div>
+            <h5 class="fw-bold text-dark">إضافات المتصفح لنظام نور ومدرستي</h5>
+            <p class="text-muted small">أدوات مساعدة لمتصفحات Chrome و Edge تعمل على تسريع رصد الغياب الجماعي، سحب التقارير، وتوليد كشوفات الحضور تلقائياً بنقرة زر.</p>
+            <hr>
+            <h6 class="fw-bold small text-primary mb-2">أبرز الخدمات والنماذج:</h6>
+            <ul class="small ps-3 mb-0 text-muted">
+              <li>الرصد التلقائي للغياب والتأخر اليومي في نظام نور.</li>
+              <li>استخراج مسيرات الدوام وسجلات الطلاب بتنسيق Excel/PDF.</li>
+              <li>توليد رسائل وإشعارات الغياب الفورية عبر تطبيق WhatsApp.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- القسم الثاني: مجالات الاستخدام والنماذج المؤهلة -->
+    <section class="mb-5">
+      <h3 class="section-title">2. مجالات الاستخدام والنماذج المؤهلة للأتمتة والدمج</h3>
+      <div class="row g-4">
+        
+        <div class="col-md-6">
+          <div class="custom-card">
+            <h5 class="fw-bold text-primary mb-3">في ماذا يمكننا استخدام هذه المنظومات؟</h5>
+            <div class="d-flex mb-3">
+              <div class="me-3 fs-4 text-success">✓</div>
+              <div>
+                <strong class="d-block">الأرشفة السحابية وتقليل الهدر الورقي:</strong>
+                <span class="text-muted small">تحويل السجلات الورقية الثقيلة إلى نماذج رقمية تفاعلية تحفظ محلياً أو سحابياً مع سهولة الرجوع إليها.</span>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <div class="me-3 fs-4 text-success">✓</div>
+              <div>
+                <strong class="d-block">سرعة إعداد وطباعة التقارير الرسمية:</strong>
+                <span class="text-muted small">توليد محاضر الانضباط، إشعارات أولياء الأمور، وجداول الانتظار اليومية في ثوانٍ معدودة.</span>
+              </div>
+            </div>
+            <div class="d-flex mb-0">
+              <div class="me-3 fs-4 text-success">✓</div>
+              <div>
+                <strong class="d-block">الامتثال للوائح وزارة التعليم:</strong>
+                <span class="text-muted small">ضمان تطبيق قواعد السلوك والمواظبة المحدثة والدليل الإجرائي المعتمد بصورة نظامية ودقيقة.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="custom-card">
+            <h5 class="fw-bold text-primary mb-3">النماذج المؤهلة للاستخدام والأتمتة</h5>
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                  <tr>
+                    <th>المجال</th>
+                    <th>النماذج المؤهلة</th>
+                    <th>مستوى الجاهزية</th>
+                  </tr>
+                </thead>
+                <tbody class="small">
+                  <tr>
+                    <td class="fw-bold">دوام الموظفين</td>
+                    <td>نموذج (17/17ب)، نموذج (18) للتنبيه، سجل الاستئذان</td>
+                    <td><span class="badge bg-success">جاهز ومجرد</span></td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">شؤون الطلاب</td>
+                    <td>رصد الغياب اليومي، تعهد المواظبة، بطاقة الاستئذان</td>
+                    <td><span class="badge bg-success">جاهز ومجرد</span></td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">الشؤون التعليمية</td>
+                    <td>جدول الانتظار، جدول المناوبة، سجل البيئة الصفية</td>
+                    <td><span class="badge bg-success">جاهز ومجرد</span></td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">التطوير والتخطيط</td>
+                    <td>الخطة التشغيلية للوكيل، خطة التحسين والتطوير</td>
+                    <td><span class="badge bg-success">جاهز ومجرد</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- القسم الثالث: المواصفات الطباعية الرسمية وأنواع وأحجام الخطوط -->
+    <section class="mb-5">
+      <h3 class="section-title">3. المواصفات الطباعية الرسمية للنماذج (أنواع وأحجام الخطوط)</h3>
+      <p class="text-muted">لضمان خروج النماذج والقوالب بنفس الدقة والتصميم الإداري المعتمد في وزارة التعليم، يجب تطبيق معايير الخطوط والمقاسات التالية:</p>
+
+      <div class="table-responsive bg-white rounded shadow-sm border p-3">
+        <table class="table table-hover table-bordered text-center align-middle mb-0">
+          <thead>
+            <tr>
+              <th>العنصر داخل النموذج</th>
+              <th>نوع الخط المعتمد</th>
+              <th>الحجم (Font Size)</th>
+              <th>الوزن (Weight)</th>
+              <th>الاستخدام الموصى به</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold">الترويسة وعنوان النموذج</td>
+              <td><code>Cairo</code> أو <code>Tajawal</code></td>
+              <td><span class="badge bg-secondary font-spec-badge">16pt - 18pt (22px - 24px)</span></td>
+              <td>Bold (700 / 800)</td>
+              <td>اسم المدرسة، رقم النموذج الرسمي (مثل نموذج 18)</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">عناوين الجداول والأقسام</td>
+              <td><code>Cairo</code></td>
+              <td><span class="badge bg-secondary font-spec-badge">12pt - 14pt (16px - 18px)</span></td>
+              <td>Semi-Bold (600)</td>
+              <td>رؤوس الأعمدة في جداول الدوام والانتظار والمناوبة</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">بيانات الحقول والنصوص</td>
+              <td><code>Tajawal</code> أو <code>Cairo</code></td>
+              <td><span class="badge bg-secondary font-spec-badge">10pt - 11pt (13px - 14px)</span></td>
+              <td>Regular (400)</td>
+              <td>أسماء المعلمين، السجلات المدنية، الإفادات، التوجيهات</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">الملاحظات والهوامش السفلية</td>
+              <td><code>Tajawal</code></td>
+              <td><span class="badge bg-secondary font-spec-badge">8pt - 9pt (11px - 12px)</span></td>
+              <td>Regular (400) / Light</td>
+              <td>التعليمات الإجرائية، تواريخ الرصد، أرقام الصفحات</td>
+            </tr>
+            <tr>
+              <td class="fw-bold">خانات التواقيع والاعتماد</td>
+              <td><code>Cairo</code></td>
+              <td><span class="badge bg-secondary font-spec-badge">11pt (14px)</span></td>
+              <td>Bold (700)</td>
+              <td>توقيع الموظف، توقيع الوكيل، وختم مدير المدرسة</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- القسم الرابع: كود التهيئة البرمجية للخطوط والقوالب -->
+    <section>
+      <h3 class="section-title">4. قواعد التنسيق البرمجي (CSS Standards) للطباعة والقوالب</h3>
+      <div class="custom-card">
+        <p class="small text-muted mb-3">يمكنك نسخ كود CSS التالي وتطبيقه على أي قالب ترغب في دمج النماذج المجردة معه لضمان التوافق التام مع مقاسات الطباعة (A4):</p>
+        <pre class="bg-dark text-light p-3 rounded" dir="ltr"><code>/* معايير ضبط الخطوط وقوالب الطباعة الرسمية للنماذج */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 15mm 12mm;
+  }
+  body {
+    font-family: 'Tajawal', 'Cairo', sans-serif !important;
+    font-size: 10pt;
+    color: #000000 !important;
+    background: #ffffff !important;
+  }
+  .form-title-bar h5 {
+    font-size: 14pt !important;
+    font-weight: 700;
+  }
+  .table {
+    border-color: #000000 !important;
+    font-size: 9.5pt !important;
+  }
+  .table th {
+    background-color: #f2f2f2 !important;
+    color: #000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}</code></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="text-center py-4 border-top bg-white text-muted small">
+    <div class="container">
+      منظومة نماذج وأدوات وكيل المدرسة | متوافق مع الدليل التنظيمي والإجرائي لمدارس التعليم العام بالمملكة العربية السعودية
+    </div>
+  </footer>
+
+</body>
+</html>
